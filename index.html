@@ -332,10 +332,24 @@ function girarRoleta() {
   const premioCerto   = sortearPremio();
   const idx           = premios.findIndex(p => p.nome === premioCerto.nome);
   const arcSize       = (2 * Math.PI) / premios.length;
-  const anguloFinal   = (-idx * arcSize - arcSize / 2 - Math.PI / 2) + (6 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
-  const duracao       = 4500 + Math.random() * 1000;
-  const tInicio       = performance.now();
-  const aInicio       = anguloAtual;
+
+  // Centro do segmento ganhador no referencial da roleta (sem rotação)
+  // O segmento i começa em: i * arcSize - PI/2
+  // Centro do segmento: i * arcSize + arcSize/2 - PI/2
+  // Para a seta (topo = 0) apontar para esse centro, precisamos girar a roleta
+  // de forma que esse ângulo fique em 0. Logo anguloDestino = -(centro do segmento)
+  const centroSegmento = idx * arcSize + arcSize / 2 - Math.PI / 2;
+  const anguloDestino  = -centroSegmento;
+
+  // Normaliza pro intervalo [0, 2PI] e adiciona voltas completas
+  const voltas       = 6 + Math.floor(Math.random() * 4);
+  const anguloFinal  = anguloAtual
+    + (((anguloDestino - anguloAtual) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI))
+    + voltas * 2 * Math.PI;
+
+  const duracao  = 4500 + Math.random() * 1000;
+  const tInicio  = performance.now();
+  const aInicio  = anguloAtual;
 
   function animar(agora) {
     const t      = Math.min((agora - tInicio) / duracao, 1);
