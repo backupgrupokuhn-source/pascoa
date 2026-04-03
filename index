@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Roleta da Páscoa 🐣 Grupo Kuhn</title>
+<title>Roleta da Páscoa 🐰 Grupo Kuhn</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -563,7 +563,7 @@
 // ============================================================
 // ⚙️ CONFIGURAÇÃO — SUBSTITUA PELA URL DO SEU APPS SCRIPT
 // ============================================================
-const APPS_SCRIPT_URL = 'COLE_AQUI_A_URL_DO_SEU_WEB_APP';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdXzKRG0Eg8bCmmeKbgA8Bl-ktHe4icYa8BQYiPr4sza9PP4w-vTewQsPTPnZQEaEY/exec';
 
 // ============================================================
 // ESTADO DA APLICAÇÃO
