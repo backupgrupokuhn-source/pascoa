@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Roleta da Páscoa 🐣 Grupo Kuhn</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --laranja: #F4721B;
+    --laranja-escuro: #C45A0E;
+    --laranja-claro: #FFB347;
+    --amarelo: #FFD700;
+    --marrom: #6B3A1F;
+    --creme: #FFF8EE;
+    --verde: #4CAF50;
+    --rosa: #FF6B9D;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--creme);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* FUNDO TEMÁTICO */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, #FFE0B2 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, #FFCCBC 0%, transparent 50%),
+      var(--creme);
+    z-index: 0;
+  }
+
+  /* OVOS DECORATIVOS FLUTUANDO */
+  .egg-deco {
+    position: fixed;
+    font-size: 2rem;
+    opacity: 0.15;
+    animation: floatEgg 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .egg-deco:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; font-size: 2.5rem; }
+  .egg-deco:nth-child(2) { top: 15%; right: 8%; animation-delay: 1s; font-size: 1.8rem; }
+  .egg-deco:nth-child(3) { top: 60%; left: 3%; animation-delay: 2s; font-size: 3rem; }
+  .egg-deco:nth-child(4) { top: 70%; right: 5%; animation-delay: 0.5s; font-size: 2rem; }
+  .egg-deco:nth-child(5) { bottom: 10%; left: 15%; animation-delay: 1.5s; font-size: 2.2rem; }
+  .egg-deco:nth-child(6) { bottom: 5%; right: 20%; animation-delay: 3s; font-size: 1.5rem; }
+
+  @keyframes floatEgg {
+    0%, 100% { transform: translateY(0) rotate(-10deg); }
+    50% { transform: translateY(-15px) rotate(10deg); }
+  }
+
+  /* CONTAINER PRINCIPAL */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+    animation: slideDown 0.6s ease;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo-area {
+    background: var(--laranja);
+    border-radius: 20px;
+    padding: 16px 20px 12px;
+    display: inline-block;
+    box-shadow: 0 6px 20px rgba(244,114,27,0.4);
+    margin-bottom: 12px;
+  }
+  .logo-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: white;
+    letter-spacing: 1px;
+    opacity: 0.9;
+  }
+  .logo-grupo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    color: white;
+    line-height: 1;
+  }
+
+  .title-pascoa {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.2rem;
+    color: var(--marrom);
+    line-height: 1.1;
+  }
+  .title-pascoa span {
+    color: var(--laranja);
+  }
+  .subtitle {
+    font-size: 0.95rem;
+    color: #8B6347;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* TELA DE LOGIN */
+  #screen-login {
+    animation: fadeIn 0.5s ease;
+  }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow: 0 8px 32px rgba(107,58,31,0.12);
+    border: 2px solid rgba(244,114,27,0.15);
+  }
+
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: var(--marrom);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .card-sub {
+    font-size: 0.85rem;
+    color: #999;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .field-group {
+    margin-bottom: 16px;
+  }
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--marrom);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #F0E0D0;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--marrom);
+    background: #FDFAF7;
+    outline: none;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  input[type="text"]:focus {
+    border-color: var(--laranja);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(244,114,27,0.1);
+  }
+  input[type="text"]::placeholder {
+    color: #CCC;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--laranja), var(--laranja-escuro));
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(244,114,27,0.4);
+    transition: all 0.2s;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary:active {
+    transform: scale(0.97);
+    box-shadow: 0 3px 10px rgba(244,114,27,0.3);
+  }
+  .btn-primary:disabled {
+    background: #CCC;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .error-msg {
+    background: #FFE8E8;
+    border: 1px solid #FFB3B3;
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #CC3333;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 12px;
+    animation: shake 0.4s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+
+  /* TELA DA ROLETA */
+  #screen-roleta { display: none; animation: fadeIn 0.5s ease; }
+
+  .vendedor-badge {
+    background: linear-gradient(135deg, var(--laranja), var(--laranja-claro));
+    border-radius: 50px;
+    padding: 10px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(244,114,27,0.3);
+  }
+  .vendedor-badge span {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .vendedor-badge strong {
+    display: block;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: white;
+    line-height: 1.1;
+  }
+
+  /* ROLETA */
+  .wheel-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .wheel-arrow {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+  }
+
+  .wheel-wrapper {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 6px white,
+      0 0 0 10px var(--laranja),
+      0 10px 40px rgba(107,58,31,0.25);
+  }
+
+  #wheel-canvas {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .wheel-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    border: 4px solid var(--laranja);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 5;
+  }
+
+  .btn-spin {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: var(--marrom);
+    border: none;
+    border-radius: 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255,165,0,0.5);
+    transition: all 0.2s;
+    margin-top: 16px;
+  }
+  .btn-spin:active { transform: scale(0.97); }
+  .btn-spin:disabled {
+    background: #EEE;
+    color: #AAA;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* TELA DE RESULTADO */
+  #screen-resultado { display: none; animation: fadeIn 0.5s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .resultado-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(107,58,31,0.2);
+    margin-bottom: 16px;
+  }
+
+  .resultado-header {
+    background: linear-gradient(135deg, var(--laranja), var(--laranja-escuro));
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .resultado-emoji { font-size: 3.5rem; display: block; margin-bottom: 4px; animation: bounceIn 0.6s ease; }
+  @keyframes bounceIn {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  .resultado-titulo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: white;
+    opacity: 0.9;
+  }
+  .resultado-premio {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: white;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+
+  .resultado-body {
+    padding: 20px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #F5EEE8;
+    font-size: 0.9rem;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: #999; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+  .info-value { font-weight: 800; color: var(--marrom); }
+
+  .codigo-cupom {
+    background: #FFF8EE;
+    border: 2px dashed var(--laranja);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .codigo-label { font-size: 0.75rem; font-weight: 800; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+  .codigo-valor {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: var(--laranja);
+    letter-spacing: 3px;
+  }
+
+  .btn-cupom {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--verde), #388E3C);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(76,175,80,0.4);
+    transition: all 0.2s;
+  }
+  .btn-cupom:active { transform: scale(0.97); }
+
+  /* CANVAS DO CUPOM (oculto, pra gerar imagem) */
+  #cupom-canvas { display: none; }
+
+  /* LOADING */
+  .loading {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    pointer-events: none;
+    z-index: 999;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- DECORAÇÃO DE FUNDO -->
+<div class="egg-deco">🥚</div>
+<div class="egg-deco">🐣</div>
+<div class="egg-deco">🌸</div>
+<div class="egg-deco">🐰</div>
+<div class="egg-deco">🌷</div>
+<div class="egg-deco">🍫</div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-text">GRUPO</div>
+      <div class="logo-grupo">KUHN</div>
+    </div>
+    <div class="title-pascoa">Roleta da <span>Páscoa</span> 🐣</div>
+    <div class="subtitle">Gire e ganhe um prêmio especial!</div>
+  </div>
+
+  <!-- TELA 1: LOGIN -->
+  <div id="screen-login">
+    <div class="card">
+      <div class="card-title">✨ Seu presente te espera</div>
+      <div class="card-sub">Preencha os dados para liberar a roleta</div>
+
+      <div class="field-group">
+        <label>👤 Seu nome</label>
+        <input type="text" id="input-nome" placeholder="Como você se chama?" autocomplete="off" />
+      </div>
+
+      <div class="field-group">
+        <label>🔑 Senha da campanha</label>
+        <input type="text" id="input-senha" placeholder="Digite a senha recebida" autocomplete="off" />
+      </div>
+
+      <button class="btn-primary" id="btn-entrar" onclick="validarAcesso()">
+        🐰 Liberar minha Roleta!
+      </button>
+
+      <div id="error-login" style="display:none" class="error-msg"></div>
+    </div>
+  </div>
+
+  <!-- TELA 2: ROLETA -->
+  <div id="screen-roleta">
+    <div class="vendedor-badge">
+      <span>Participante</span>
+      <strong id="nome-display">—</strong>
+    </div>
+
+    <div class="wheel-container">
+      <!-- SETA -->
+      <svg class="wheel-arrow" width="40" height="50" viewBox="0 0 40 50">
+        <polygon points="20,0 38,38 20,28 2,38" fill="#F4721B" stroke="white" stroke-width="2"/>
+        <circle cx="20" cy="38" r="10" fill="#F4721B" stroke="white" stroke-width="2"/>
+      </svg>
+
+      <div class="wheel-wrapper">
+        <canvas id="wheel-canvas" width="320" height="320"></canvas>
+        <div class="wheel-center">🐣</div>
+      </div>
+    </div>
+
+    <button class="btn-spin" id="btn-spin" onclick="girarRoleta()">
+      🎰 GIRAR A ROLETA!
+    </button>
+  </div>
+
+  <!-- TELA 3: RESULTADO -->
+  <div id="screen-resultado">
+    <div class="resultado-card" id="resultado-visual">
+      <div class="resultado-header">
+        <span class="resultado-emoji" id="res-emoji">🎉</span>
+        <div class="resultado-titulo">Parabéns! Você ganhou:</div>
+        <div class="resultado-premio" id="res-premio">—</div>
+      </div>
+      <div class="resultado-body">
+        <div class="info-row">
+          <span class="info-label">Vendedor</span>
+          <span class="info-value" id="res-vendedor">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Data</span>
+          <span class="info-value" id="res-data">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Loja</span>
+          <span class="info-value">Chilli Beans • Grupo Kuhn</span>
+        </div>
+        <div class="codigo-cupom">
+          <div class="codigo-label">Código do cupom</div>
+          <div class="codigo-valor" id="res-codigo">—</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-cupom" id="btn-gerar-cupom" onclick="gerarCupom()">
+      📲 Gerar imagem pro grupo
+    </button>
+
+    <canvas id="cupom-canvas" width="800" height="1000"></canvas>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// ⚙️ CONFIGURAÇÃO — SUBSTITUA PELA URL DO SEU APPS SCRIPT
+// ============================================================
+const APPS_SCRIPT_URL = 'COLE_AQUI_A_URL_DO_SEU_WEB_APP';
+
+// ============================================================
+// ESTADO DA APLICAÇÃO
+// ============================================================
+let premios = [];
+let resultadoAtual = null;
+let nomeAtual = '';
+let senhaAtual = '';
+let isSpinning = false;
+let anguloAtual = 0;
+
+// ============================================================
+// TELA 1: VALIDAR ACESSO
+// ============================================================
+async function validarAcesso() {
+  const nome = document.getElementById('input-nome').value.trim();
+  const senha = document.getElementById('input-senha').value.trim().toUpperCase();
+  const errEl = document.getElementById('error-login');
+  const btn = document.getElementById('btn-entrar');
+
+  errEl.style.display = 'none';
+
+  if (!nome) { mostrarErro('Por favor, informe seu nome.'); return; }
+  if (!senha) { mostrarErro('Por favor, informe a senha da campanha.'); return; }
+
+  btn.innerHTML = '<span class="loading"></span>Verificando...';
+  btn.disabled = true;
+
+  try {
+    const resp = await fetch(`${APPS_SCRIPT_URL}?acao=validar&senha=${encodeURIComponent(senha)}&nome=${encodeURIComponent(nome)}`);
+    const data = await resp.json();
+
+    if (data.ok) {
+      nomeAtual = nome;
+      senhaAtual = senha;
+      premios = data.premios;
+      irParaRoleta();
+    } else {
+      mostrarErro(data.mensagem || 'Senha inválida ou já utilizada.');
+      btn.innerHTML = '🐰 Liberar minha Roleta!';
+      btn.disabled = false;
+    }
+  } catch (e) {
+    mostrarErro('Erro de conexão. Tente novamente.');
+    btn.innerHTML = '🐰 Liberar minha Roleta!';
+    btn.disabled = false;
+  }
+}
+
+function mostrarErro(msg) {
+  const el = document.getElementById('error-login');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// Permite Enter nos campos
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('input-senha').addEventListener('keypress', e => {
+    if (e.key === 'Enter') validarAcesso();
+  });
+});
+
+// ============================================================
+// TELA 2: ROLETA
+// ============================================================
+function irParaRoleta() {
+  document.getElementById('screen-login').style.display = 'none';
+  document.getElementById('screen-roleta').style.display = 'block';
+  document.getElementById('nome-display').textContent = nomeAtual;
+  desenharRoleta(0);
+}
+
+// Paleta de cores temática Páscoa + Laranja Kuhn
+const CORES_ROLETA = [
+  '#F4721B', '#FFD700', '#FF8C42', '#4CAF50',
+  '#FF6B9D', '#9C27B0', '#2196F3', '#FF5722',
+  '#8BC34A', '#F06292'
+];
+
+function desenharRoleta(angulo) {
+  const canvas = document.getElementById('wheel-canvas');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const raio = cx - 4;
+  const total = premios.length;
+  const arcSize = (2 * Math.PI) / total;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < total; i++) {
+    const inicio = angulo + i * arcSize - Math.PI / 2;
+    const fim = inicio + arcSize;
+
+    // Fatia
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, raio, inicio, fim);
+    ctx.closePath();
+    ctx.fillStyle = CORES_ROLETA[i % CORES_ROLETA.length];
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Texto
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(inicio + arcSize / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'white';
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 4;
+
+    const emoji = premios[i].emoji || '🎁';
+    const nome = premios[i].nome || '';
+    const maxChar = 14;
+    const nomeCorto = nome.length > maxChar ? nome.substring(0, maxChar) + '…' : nome;
+
+    ctx.font = 'bold 13px Nunito, sans-serif';
+    ctx.fillText(nomeCorto, raio - 14, 5);
+
+    ctx.font = '16px serif';
+    ctx.fillText(emoji, raio - 14 - ctx.measureText(nomeCorto).width - 6, 6);
+
+    ctx.restore();
+  }
+
+  // Centro decorativo
+  ctx.beginPath();
+  ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
+  ctx.fillStyle = 'white';
+  ctx.fill();
+}
+
+function girarRoleta() {
+  if (isSpinning || premios.length === 0) return;
+  isSpinning = true;
+  document.getElementById('btn-spin').disabled = true;
+
+  // Sorteia o prêmio baseado nas probabilidades
+  const premioCerto = sortearPremio();
+  const indexGanhador = premios.findIndex(p => p.nome === premioCerto.nome);
+
+  const total = premios.length;
+  const arcSize = (2 * Math.PI) / total;
+
+  // Calcula ângulo necessário pra parar no prêmio sorteado
+  const anguloAlvo = -(indexGanhador * arcSize + arcSize / 2);
+  const voltas = 5 + Math.random() * 3; // 5-8 voltas
+  const anguloFinal = anguloAtual + (2 * Math.PI * voltas) + anguloAlvo - (anguloAtual % (2 * Math.PI));
+
+  const duracao = 4000 + Math.random() * 1500;
+  const inicio = performance.now();
+  const anguloInicio = anguloAtual;
+
+  function animar(agora) {
+    const t = Math.min((agora - inicio) / duracao, 1);
+    const ease = easeOutCubic(t);
+    const angulo = anguloInicio + (anguloFinal - anguloInicio) * ease;
+    anguloAtual = angulo;
+    desenharRoleta(angulo);
+
+    if (t < 1) {
+      requestAnimationFrame(animar);
+    } else {
+      isSpinning = false;
+      setTimeout(() => mostrarResultado(premioCerto), 600);
+    }
+  }
+
+  requestAnimationFrame(animar);
+}
+
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function sortearPremio() {
+  const total = premios.reduce((s, p) => s + (p.probabilidade || 1), 0);
+  let rand = Math.random() * total;
+  for (const p of premios) {
+    rand -= (p.probabilidade || 1);
+    if (rand <= 0) return p;
+  }
+  return premios[premios.length - 1];
+}
+
+// ============================================================
+// TELA 3: RESULTADO
+// ============================================================
+async function mostrarResultado(premio) {
+  // Registra no Sheets
+  const codigo = gerarCodigo();
+  const agora = new Date();
+  const dataStr = agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+  try {
+    await fetch(`${APPS_SCRIPT_URL}?acao=registrar&senha=${encodeURIComponent(senhaAtual)}&nome=${encodeURIComponent(nomeAtual)}&premio=${encodeURIComponent(premio.nome)}&codigo=${encodeURIComponent(codigo)}`);
+  } catch(e) { /* registra mesmo sem confirmação */ }
+
+  resultadoAtual = { premio, codigo, data: dataStr, nome: nomeAtual };
+
+  document.getElementById('res-emoji').textContent = premio.emoji || '🎉';
+  document.getElementById('res-premio').textContent = premio.nome;
+  document.getElementById('res-vendedor').textContent = nomeAtual;
+  document.getElementById('res-data').textContent = dataStr;
+  document.getElementById('res-codigo').textContent = codigo;
+
+  document.getElementById('screen-roleta').style.display = 'none';
+  document.getElementById('screen-resultado').style.display = 'block';
+
+  lancarConfetti();
+}
+
+function gerarCodigo() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let cod = 'KB-';
+  for (let i = 0; i < 6; i++) cod += chars[Math.floor(Math.random() * chars.length)];
+  return cod;
+}
+
+function lancarConfetti() {
+  const cores = ['#F4721B','#FFD700','#FF6B9D','#4CAF50','#9C27B0','#2196F3'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+      el.style.width = (8 + Math.random() * 8) + 'px';
+      el.style.height = (8 + Math.random() * 8) + 'px';
+      el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 40);
+  }
+}
+
+// ============================================================
+// GERAR CUPOM (IMAGEM)
+// ============================================================
+async function gerarCupom() {
+  const btn = document.getElementById('btn-gerar-cupom');
+  btn.innerHTML = '<span class="loading"></span>Gerando...';
+  btn.disabled = true;
+
+  const canvas = document.getElementById('cupom-canvas');
+  canvas.style.display = 'block';
+  const ctx = canvas.getContext('2d');
+  const W = 800, H = 1000;
+
+  // Fundo gradiente laranja
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#F4721B');
+  grad.addColorStop(0.5, '#C45A0E');
+  grad.addColorStop(1, '#6B3A1F');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Padrão de bolinhas sutis
+  ctx.fillStyle = 'rgba(255,255,255,0.05)';
+  for (let x = 0; x < W; x += 40) {
+    for (let y = 0; y < H; y += 40) {
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, 2*Math.PI);
+      ctx.fill();
+    }
+  }
+
+  // Card branco central
+  const cardX = 40, cardY = 200, cardW = W-80, cardH = 600;
+  ctx.fillStyle = 'white';
+  roundRect(ctx, cardX, cardY, cardW, cardH, 32);
+  ctx.fill();
+
+  // GRUPO KUHN topo
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 24px Nunito, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('GRUPO KUHN', W/2, 80);
+  ctx.font = 'bold 48px Fredoka One, cursive';
+  ctx.fillText('Roleta da Páscoa 🐣', W/2, 140);
+  ctx.font = '22px Nunito, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.fillText('Chilli Beans', W/2, 175);
+
+  // Emoji grande
+  ctx.font = '80px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(resultadoAtual.premio.emoji || '🎉', W/2, cardY + 110);
+
+  // "Você ganhou"
+  ctx.fillStyle = '#8B6347';
+  ctx.font = 'bold 26px Nunito, sans-serif';
+  ctx.fillText('🎊 PARABÉNS, VOCÊ GANHOU:', W/2, cardY + 165);
+
+  // Nome do prêmio
+  ctx.fillStyle = '#F4721B';
+  ctx.font = 'bold 52px Fredoka One, cursive';
+  wrapText(ctx, resultadoAtual.premio.nome, W/2, cardY + 230, cardW - 60, 58);
+
+  // Linha divisória pontilhada
+  ctx.strokeStyle = '#F0E0D0';
+  ctx.setLineDash([8, 6]);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cardX + 40, cardY + 330);
+  ctx.lineTo(cardX + cardW - 40, cardY + 330);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Infos
+  ctx.textAlign = 'left';
+  const col1 = cardX + 50, col2 = cardX + cardW/2;
+  const rowY = cardY + 385;
+
+  ctx.fillStyle = '#BBB';
+  ctx.font = 'bold 16px Nunito, sans-serif';
+  ctx.fillText('VENDEDOR', col1, rowY - 20);
+  ctx.fillText('DATA', col2, rowY - 20);
+
+  ctx.fillStyle = '#3A2010';
+  ctx.font = 'bold 22px Nunito, sans-serif';
+  ctx.fillText(resultadoAtual.nome, col1, rowY + 8);
+  ctx.fillText(resultadoAtual.data, col2, rowY + 8);
+
+  // Código cupom
+  ctx.fillStyle = '#FFF8EE';
+  roundRect(ctx, cardX + 40, cardY + 430, cardW - 80, 100, 16);
+  ctx.fill();
+
+  ctx.strokeStyle = '#F4721B';
+  ctx.setLineDash([8, 6]);
+  ctx.lineWidth = 3;
+  roundRect(ctx, cardX + 40, cardY + 430, cardW - 80, 100, 16);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#AAA';
+  ctx.font = 'bold 16px Nunito, sans-serif';
+  ctx.fillText('CÓDIGO DO CUPOM', W/2, cardY + 468);
+
+  ctx.fillStyle = '#F4721B';
+  ctx.font = 'bold 44px Fredoka One, cursive';
+  ctx.letterSpacing = '6px';
+  ctx.fillText(resultadoAtual.codigo, W/2, cardY + 518);
+
+  // Validade
+  ctx.fillStyle = '#CCC';
+  ctx.font = '18px Nunito, sans-serif';
+  ctx.fillText('Válido para resgate nesta data • Apresente ao gerente', W/2, cardY + 570);
+
+  // Rodapé
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '20px Nunito, sans-serif';
+  ctx.fillText('grupo-kuhn.com.br  •  Páscoa 2025', W/2, H - 30);
+
+  // Baixar / compartilhar
+  const dataURL = canvas.toDataURL('image/png');
+  canvas.style.display = 'none';
+
+  // Tenta Web Share API (mobile)
+  if (navigator.share && navigator.canShare) {
+    try {
+      const blob = await (await fetch(dataURL)).blob();
+      const file = new File([blob], 'cupom-pascoa-kuhn.png', { type: 'image/png' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Meu prêmio da Páscoa - Grupo Kuhn' });
+        btn.innerHTML = '✅ Compartilhado!';
+        btn.disabled = false;
+        return;
+      }
+    } catch(e) {}
+  }
+
+  // Fallback: download
+  const a = document.createElement('a');
+  a.href = dataURL;
+  a.download = 'cupom-pascoa-kuhn.png';
+  a.click();
+
+  btn.innerHTML = '✅ Imagem baixada!';
+  btn.disabled = false;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  let lines = [];
+  for (const word of words) {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxW && line) {
+      lines.push(line.trim());
+      line = word + ' ';
+    } else { line = test; }
+  }
+  lines.push(line.trim());
+  const startY = y - ((lines.length - 1) * lineH) / 2;
+  lines.forEach((l, i) => ctx.fillText(l, x, startY + i * lineH));
+}
+</script>
+</body>
+</html>
