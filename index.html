@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Roleta da Páscoa - Grupo Kuhn</title>
+<title>Roleta da Páscoa 🐣 Grupo Kuhn</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -216,12 +216,12 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
 </head>
 <body>
 
-<div class="egg-deco">🥚</div>
-<div class="egg-deco">🐣</div>
 <div class="egg-deco">🌸</div>
-<div class="egg-deco">🐰</div>
 <div class="egg-deco">🌷</div>
 <div class="egg-deco">🍫</div>
+<div class="egg-deco">🌼</div>
+<div class="egg-deco">🌺</div>
+<div class="egg-deco">🍀</div>
 
 <div class="container">
 
@@ -230,7 +230,7 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
       <div class="logo-text">GRUPO</div>
       <div class="logo-grupo">KUHN</div>
     </div>
-    <div class="title-pascoa">Roleta da <span>Páscoa</span> </div>
+    <div class="title-pascoa">Roleta da <span>Páscoa</span></div>
     <div class="subtitle">Gire e ganhe um prêmio especial!</div>
   </div>
 
@@ -238,17 +238,25 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
   <div id="screen-login" class="screen active">
     <div class="card">
       <div class="card-title">✨ Seu presente te espera</div>
-      <div class="card-sub">Preencha os dados</div>
+      <div class="card-sub">Preencha os dados para girar a roleta</div>
       <div class="field-group">
         <label>👤 Seu nome</label>
         <input type="text" id="input-nome" placeholder="Como você se chama?" autocomplete="off">
       </div>
       <div class="field-group">
+        <label>📍 Sua loja</label>
+        <input type="text" id="input-loja" placeholder="Ex: Shopping Manauara" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label>💸 Seu PIX</label>
+        <input type="text" id="input-pix" placeholder="CPF, e-mail ou telefone" autocomplete="off">
+      </div>
+      <div class="field-group">
         <label>🔑 Senha da campanha</label>
-        <input type="text" id="input-senha" placeholder="Peça no capitães" autocomplete="off">
+        <input type="text" id="input-senha" placeholder="Ex: COELHO-847" autocomplete="off">
       </div>
       <button class="btn-primary" id="btn-entrar" onclick="validarAcesso()">
-        🐰 Liberar!
+        Girar a Roleta!
       </button>
       <div id="error-login" class="error-msg" style="display:none"></div>
     </div>
@@ -267,11 +275,11 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
       </svg>
       <div class="wheel-wrapper">
         <canvas id="wheel-canvas" width="320" height="320"></canvas>
-        <div class="wheel-center">🐣</div>
+        <div class="wheel-center">🌸</div>
       </div>
     </div>
     <button class="btn-spin" id="btn-spin" onclick="girarRoleta()">
-      🎰 GIRAR A ROLETA!
+      GIRAR A ROLETA!
     </button>
   </div>
 
@@ -294,7 +302,11 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
         </div>
         <div class="info-row">
           <span class="info-label">Loja</span>
-          <span class="info-value">Chilli Beans • Grupo Kuhn</span>
+          <span class="info-value" id="res-loja">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">PIX</span>
+          <span class="info-value" id="res-pix">—</span>
         </div>
         <div class="codigo-cupom">
           <div class="codigo-label">Código do cupom</div>
@@ -302,17 +314,13 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
         </div>
       </div>
     </div>
-    <button class="btn-cupom" onclick="gerarCupom()">
-      📲 Gerar imagem pro grupo
-    </button>
-    <canvas id="cupom-canvas" width="800" height="1000"></canvas>
   </div>
 
 </div>
 
 <script>
 // ================================================================
-// ⚙️ COLE AQUI A URL DO SEU APPS SCRIPT
+// ⚙️ URL DO APPS SCRIPT
 // ================================================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/library/d/1AxGXHjVN5OFH9Tvz2i3P1U2lFSyC3sxJpdEWBSNJYrBWtJmCinqu47gQ/2';
 
@@ -321,7 +329,9 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/library/d/1AxGXHjVN5OF
 // ================================================================
 let premios = [];
 let resultadoAtual = null;
-let nomeAtual = '';
+let nomeAtual  = '';
+let lojaAtual  = '';
+let pixAtual   = '';
 let senhaAtual = '';
 let isSpinning = false;
 let anguloAtual = 0;
@@ -382,8 +392,13 @@ function jsonp(url, callback) {
   });
 }
 
+// Senha já usada nesta sessão — trava dupla no frontend
+let senhaJaUsada = false;
+
 async function validarAcesso() {
   const nome  = document.getElementById('input-nome').value.trim();
+  const loja  = document.getElementById('input-loja').value.trim();
+  const pix   = document.getElementById('input-pix').value.trim();
   const senha = document.getElementById('input-senha').value.trim().toUpperCase();
   const btn   = document.getElementById('btn-entrar');
   const err   = document.getElementById('error-login');
@@ -391,41 +406,51 @@ async function validarAcesso() {
   err.style.display = 'none';
 
   if (!nome)  { mostrarErro('Por favor, informe seu nome.');    return; }
+  if (!loja)  { mostrarErro('Por favor, informe sua loja.');    return; }
+  if (!pix)   { mostrarErro('Por favor, informe seu PIX.');     return; }
   if (!senha) { mostrarErro('Por favor, informe a senha.');     return; }
 
   btn.innerHTML = '<span class="loading"></span>Verificando...';
   btn.disabled  = true;
 
   // Modo demo se URL não configurada
-  if (APPS_SCRIPT_URL === 'https://script.google.com/macros/library/d/1AxGXHjVN5OFH9Tvz2i3P1U2lFSyC3sxJpdEWBSNJYrBWtJmCinqu47gQ/2') {
-    premios   = getPremiosDemo();
-    nomeAtual = nome;
+  if (APPS_SCRIPT_URL === 'COLE_AQUI_A_URL_DO_SEU_WEB_APP') {
+    premios    = getPremiosDemo();
+    nomeAtual  = nome;
+    lojaAtual  = loja;
+    pixAtual   = pix;
     senhaAtual = senha;
     irParaRoleta();
-    btn.innerHTML = '🐰 Liberar minha Roleta!';
+    btn.innerHTML = 'Confirmar';
     btn.disabled  = false;
     return;
   }
 
   try {
-    const url  = `${APPS_SCRIPT_URL}?acao=validar&senha=${encodeURIComponent(senha)}&nome=${encodeURIComponent(nome)}`;
+    const url  = `${APPS_SCRIPT_URL}?acao=validar&senha=${encodeURIComponent(senha)}&nome=${encodeURIComponent(nome)}&loja=${encodeURIComponent(loja)}&pix=${encodeURIComponent(pix)}`;
     const data = await jsonp(url);
 
     if (data.ok) {
       nomeAtual  = nome;
+      lojaAtual  = loja;
+      pixAtual   = pix;
       senhaAtual = senha;
       premios    = data.premios;
+      // Trava o botão permanentemente — senha consumida no Sheets
+      btn.innerHTML = 'Confirmar';
+      btn.disabled  = false;
       irParaRoleta();
     } else {
       mostrarErro(data.mensagem || 'Senha inválida ou já utilizada.');
+      btn.innerHTML = 'Confirmar';
+      btn.disabled  = false;
     }
   } catch (e) {
     mostrarErro('Erro ao conectar. Verifique a URL do Web App.');
     console.error(e);
+    btn.innerHTML = 'Confirmar';
+    btn.disabled  = false;
   }
-
-  btn.innerHTML = '🐰 Liberar!';
-  btn.disabled  = false;
 }
 
 function mostrarErro(msg) {
@@ -520,11 +545,17 @@ function desenharRoleta(angulo) {
 
 function girarRoleta() {
   if (isSpinning) return;
+  if (senhaJaUsada) {
+    alert('Esta senha já foi utilizada para girar a roleta.');
+    return;
+  }
   if (premios.length === 0) {
     alert('Nenhum prêmio carregado. Verifique a aba "premios" no Sheets.');
     return;
   }
 
+  // Bloqueia imediatamente — não permite segundo giro
+  senhaJaUsada = true;
   isSpinning = true;
   document.getElementById('btn-spin').disabled = true;
 
@@ -590,24 +621,28 @@ async function mostrarResultado(premio) {
   const dataStr = agora.toLocaleDateString('pt-BR') + ' ' +
                   agora.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
 
-  // Registra no Sheets (não bloqueia a UI)
-  if (APPS_SCRIPT_URL !== 'https://script.google.com/macros/library/d/1AxGXHjVN5OFH9Tvz2i3P1U2lFSyC3sxJpdEWBSNJYrBWtJmCinqu47gQ/2') {
+  // Registra no Sheets com todos os dados
+  if (APPS_SCRIPT_URL !== 'COLE_AQUI_A_URL_DO_SEU_WEB_APP') {
     try {
       const url = `${APPS_SCRIPT_URL}?acao=registrar`
         + `&senha=${encodeURIComponent(senhaAtual)}`
         + `&nome=${encodeURIComponent(nomeAtual)}`
+        + `&loja=${encodeURIComponent(lojaAtual)}`
+        + `&pix=${encodeURIComponent(pixAtual)}`
         + `&premio=${encodeURIComponent(premio.nome)}`
         + `&codigo=${encodeURIComponent(codigo)}`;
       jsonp(url).catch(() => {});
     } catch(e) {}
   }
 
-  resultadoAtual = { premio, codigo, data: dataStr, nome: nomeAtual };
+  resultadoAtual = { premio, codigo, data: dataStr, nome: nomeAtual, loja: lojaAtual, pix: pixAtual };
 
   document.getElementById('res-emoji').textContent    = premio.emoji || '🎉';
   document.getElementById('res-premio').textContent   = premio.nome;
   document.getElementById('res-vendedor').textContent = nomeAtual;
   document.getElementById('res-data').textContent     = dataStr;
+  document.getElementById('res-loja').textContent     = lojaAtual;
+  document.getElementById('res-pix').textContent      = pixAtual;
   document.getElementById('res-codigo').textContent   = codigo;
 
   mostrarTela('screen-resultado');
@@ -672,7 +707,7 @@ async function gerarCupom() {
   ctx.font = 'bold 28px Nunito, sans-serif';
   ctx.fillText('GRUPO KUHN', W/2, 75);
   ctx.font = 'bold 52px Fredoka One, cursive';
-  ctx.fillText('Roleta da Páscoa', W/2, 140);
+  ctx.fillText('Roleta da Páscoa 🐣', W/2, 140);
   ctx.font = '22px Nunito, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.75)';
   ctx.fillText('Chilli Beans', W/2, 178);
