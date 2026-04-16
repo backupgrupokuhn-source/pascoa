@@ -3,111 +3,369 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Roleta da Páscoa — Grupo Kuhn</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<title>Roleta da Sorte — Grupo Kuhn</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --laranja: #F4721B;
-  --laranja-escuro: #C45A0E;
-  --marrom: #6B3A1F;
-  --creme: #FFF8EE;
+  --verde:     #00C853;
+  --verde-esc: #00952E;
+  --rosa:      #FF4081;
+  --rosa-esc:  #C2185B;
+  --azul:      #40C4FF;
+  --preto:     #1A1A2E;
+  --branco:    #FFFFFF;
+  --cinza-bg:  #F0F4FF;
 }
+
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { font-family:'Nunito',sans-serif; background:var(--creme); min-height:100vh; overflow-x:hidden; }
-body::before {
-  content:''; position:fixed; inset:0;
-  background: radial-gradient(ellipse at 20% 0%, #FFE0B2 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 100%, #FFCCBC 0%, transparent 50%), var(--creme);
-  z-index:0;
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--preto);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
-.egg-deco { position:fixed; font-size:2rem; opacity:0.12; animation:floatEgg 6s ease-in-out infinite; pointer-events:none; z-index:0; }
-.egg-deco:nth-child(1){top:5%;left:5%;animation-delay:0s;font-size:2.5rem}
-.egg-deco:nth-child(2){top:15%;right:8%;animation-delay:1s;font-size:1.8rem}
-.egg-deco:nth-child(3){top:60%;left:3%;animation-delay:2s;font-size:3rem}
-.egg-deco:nth-child(4){top:70%;right:5%;animation-delay:.5s;font-size:2rem}
-.egg-deco:nth-child(5){bottom:10%;left:15%;animation-delay:1.5s;font-size:2.2rem}
-.egg-deco:nth-child(6){bottom:5%;right:20%;animation-delay:3s;font-size:1.5rem}
-@keyframes floatEgg { 0%,100%{transform:translateY(0) rotate(-10deg)} 50%{transform:translateY(-15px) rotate(10deg)} }
-.container { position:relative; z-index:1; max-width:480px; margin:0 auto; padding:20px 16px 40px; min-height:100vh; }
-.header { text-align:center; margin-bottom:24px; animation:slideDown .6s ease; }
-@keyframes slideDown { from{opacity:0;transform:translateY(-30px)} to{opacity:1;transform:translateY(0)} }
-.logo-area { background:var(--laranja); border-radius:20px; padding:14px 20px 10px; display:inline-block; box-shadow:0 6px 20px rgba(244,114,27,.4); margin-bottom:12px; }
-.logo-text { font-family:'Fredoka One',cursive; font-size:1rem; color:rgba(255,255,255,.85); letter-spacing:1px; }
-.logo-grupo { font-family:'Fredoka One',cursive; font-size:1.8rem; color:white; line-height:1; }
-.title-pascoa { font-family:'Fredoka One',cursive; font-size:2.2rem; color:var(--marrom); line-height:1.1; }
-.title-pascoa span { color:var(--laranja); }
-.subtitle { font-size:.9rem; color:#8B6347; margin-top:4px; font-weight:600; }
-.card { background:white; border-radius:24px; padding:28px 24px; box-shadow:0 8px 32px rgba(107,58,31,.12); border:2px solid rgba(244,114,27,.15); }
-.card-title { font-family:'Fredoka One',cursive; font-size:1.4rem; color:var(--marrom); text-align:center; margin-bottom:6px; }
-.card-sub { font-size:.85rem; color:#999; text-align:center; margin-bottom:20px; }
-.field-group { margin-bottom:16px; }
-label { display:block; font-size:.8rem; font-weight:800; color:var(--marrom); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
-input[type="text"] { width:100%; padding:14px 16px; border:2px solid #F0E0D0; border-radius:14px; font-size:1.05rem; font-family:'Nunito',sans-serif; font-weight:700; color:var(--marrom); background:#FDFAF7; outline:none; transition:all .2s; }
-input[type="text"]:focus { border-color:var(--laranja); background:white; box-shadow:0 0 0 4px rgba(244,114,27,.1); }
-input[type="text"]::placeholder { color:#CCC; font-weight:400; }
-.btn-primary { width:100%; padding:16px; background:linear-gradient(135deg, var(--laranja), var(--laranja-escuro)); color:white; border:none; border-radius:16px; font-family:'Fredoka One',cursive; font-size:1.3rem; cursor:pointer; box-shadow:0 6px 20px rgba(244,114,27,.4); transition:all .2s; margin-top:8px; }
-.btn-primary:active { transform:scale(.97); }
-.btn-primary:disabled { background:#CCC; box-shadow:none; cursor:not-allowed; }
-.error-msg { background:#FFE8E8; border:1px solid #FFB3B3; border-radius:12px; padding:12px 16px; color:#CC3333; font-size:.9rem; font-weight:700; text-align:center; margin-top:12px; animation:shake .4s ease; }
+
+/* FUNDO COM PADRÃO DE BOLINHAS CARTOON */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(0,200,83,.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(255,64,129,.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(64,196,255,.08) 0%, transparent 60%),
+    var(--preto);
+  z-index: 0;
+}
+
+/* ESTRELINHAS FLUTUANDO */
+.star-deco {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatStar 5s ease-in-out infinite;
+  opacity: 0.25;
+  font-size: 1.5rem;
+}
+.star-deco:nth-child(1){top:8%;left:6%;animation-delay:0s}
+.star-deco:nth-child(2){top:20%;right:7%;animation-delay:.8s;font-size:1.1rem}
+.star-deco:nth-child(3){top:55%;left:4%;animation-delay:1.6s;font-size:2rem}
+.star-deco:nth-child(4){top:65%;right:6%;animation-delay:.4s;font-size:1.3rem}
+.star-deco:nth-child(5){bottom:15%;left:12%;animation-delay:2s;font-size:1.8rem}
+.star-deco:nth-child(6){bottom:8%;right:15%;animation-delay:1.2s;font-size:1rem}
+
+@keyframes floatStar {
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-12px) rotate(20deg); }
+}
+
+.container {
+  position: relative; z-index: 1;
+  max-width: 480px; margin: 0 auto;
+  padding: 20px 16px 40px;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  animation: slideDown .6s ease;
+}
+@keyframes slideDown {
+  from{ opacity:0; transform:translateY(-30px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.logo-area {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--verde), var(--verde-esc));
+  border-radius: 20px;
+  padding: 12px 20px;
+  box-shadow: 0 0 0 3px rgba(0,200,83,.3), 0 8px 24px rgba(0,200,83,.4);
+  margin-bottom: 14px;
+}
+.logo-text-wrap { text-align: left; }
+.logo-small { font-family:'Fredoka One',cursive; font-size:.85rem; color:rgba(255,255,255,.8); letter-spacing:2px; }
+.logo-big   { font-family:'Fredoka One',cursive; font-size:1.9rem; color:white; line-height:1; }
+
+/* Ícone PPG estilizado com SVG inline */
+.ppg-icon { font-size:2.2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
+
+.title-main {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.4rem;
+  color: white;
+  line-height: 1;
+  text-shadow: 3px 3px 0 var(--rosa), 6px 6px 0 rgba(255,64,129,.3);
+}
+.title-main span { color: var(--verde); text-shadow: 3px 3px 0 #005C25, 6px 6px 0 rgba(0,200,83,.3); }
+.subtitle {
+  font-size: .9rem;
+  color: rgba(255,255,255,.6);
+  margin-top: 6px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+/* ── CARD ── */
+.card {
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 28px 24px;
+  border: 2px solid rgba(0,200,83,.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.card-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  color: var(--verde);
+  text-align: center;
+  margin-bottom: 4px;
+  text-shadow: 0 0 20px rgba(0,200,83,.5);
+}
+.card-sub { font-size:.85rem; color:rgba(255,255,255,.5); text-align:center; margin-bottom:20px; }
+
+.field-group { margin-bottom:14px; }
+label {
+  display: block;
+  font-size: .75rem;
+  font-weight: 900;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 13px 16px;
+  border: 2px solid rgba(0,200,83,.25);
+  border-radius: 14px;
+  font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  color: white;
+  background: rgba(255,255,255,.08);
+  outline: none;
+  transition: all .2s;
+}
+input[type="text"]:focus {
+  border-color: var(--verde);
+  background: rgba(0,200,83,.1);
+  box-shadow: 0 0 0 4px rgba(0,200,83,.15);
+}
+input[type="text"]::placeholder { color:rgba(255,255,255,.25); font-weight:400; }
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--verde), var(--verde-esc));
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,200,83,.5), 0 0 0 3px rgba(0,200,83,.2);
+  transition: all .2s;
+  margin-top: 8px;
+  letter-spacing: .5px;
+}
+.btn-primary:active { transform: scale(.97); }
+.btn-primary:disabled { background: #444; box-shadow: none; cursor: not-allowed; color: #888; }
+
+.error-msg {
+  background: rgba(255,64,129,.15);
+  border: 1px solid var(--rosa);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #FF80AB;
+  font-size: .9rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 12px;
+  animation: shake .4s ease;
+}
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
-.screen { display:none; }
-.screen.active { display:block; animation:fadeIn .5s ease; }
+
+/* ── TELAS ── */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .5s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.vendedor-badge { background:linear-gradient(135deg, var(--laranja), #FFB347); border-radius:50px; padding:10px 20px; text-align:center; margin-bottom:20px; box-shadow:0 4px 14px rgba(244,114,27,.3); }
-.vendedor-badge span { font-size:.75rem; color:rgba(255,255,255,.85); font-weight:700; text-transform:uppercase; letter-spacing:1px; }
-.vendedor-badge strong { display:block; font-family:'Fredoka One',cursive; font-size:1.4rem; color:white; line-height:1.1; }
-.wheel-container { position:relative; display:flex; flex-direction:column; align-items:center; margin-bottom:20px; }
-.wheel-arrow { position:absolute; top:-14px; left:50%; transform:translateX(-50%); z-index:10; filter:drop-shadow(0 3px 6px rgba(0,0,0,.3)); }
-.wheel-wrapper { position:relative; width:320px; height:320px; border-radius:50%; box-shadow:0 0 0 6px white, 0 0 0 10px var(--laranja), 0 10px 40px rgba(107,58,31,.25); }
+
+/* ── BADGE VENDEDOR ── */
+.vendedor-badge {
+  background: linear-gradient(135deg, rgba(0,200,83,.2), rgba(255,64,129,.2));
+  border: 2px solid rgba(0,200,83,.4);
+  border-radius: 50px;
+  padding: 10px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.3);
+}
+.vendedor-badge span { font-size:.75rem; color:rgba(255,255,255,.6); font-weight:800; text-transform:uppercase; letter-spacing:1px; }
+.vendedor-badge strong { display:block; font-family:'Fredoka One',cursive; font-size:1.4rem; color:var(--verde); line-height:1.1; text-shadow:0 0 16px rgba(0,200,83,.6); }
+
+/* ── ROLETA ── */
+.wheel-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.wheel-arrow {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.6));
+}
+.wheel-wrapper {
+  position: relative;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 5px var(--preto),
+    0 0 0 8px var(--verde),
+    0 0 0 11px var(--preto),
+    0 0 40px rgba(0,200,83,.5),
+    0 12px 40px rgba(0,0,0,.6);
+}
 #wheel-canvas { width:320px; height:320px; border-radius:50%; display:block; }
-.wheel-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:56px; height:56px; background:white; border-radius:50%; border:4px solid var(--laranja); display:flex; align-items:center; justify-content:center; font-size:1.6rem; box-shadow:0 4px 12px rgba(0,0,0,.15); z-index:5; }
-.btn-spin { width:100%; padding:18px; background:linear-gradient(135deg, #FFD700, #FFA500); color:var(--marrom); border:none; border-radius:16px; font-family:'Fredoka One',cursive; font-size:1.5rem; cursor:pointer; box-shadow:0 6px 20px rgba(255,165,0,.5); transition:all .2s; margin-top:16px; }
-.btn-spin:active { transform:scale(.97); }
-.btn-spin:disabled { background:#EEE; color:#AAA; box-shadow:none; cursor:not-allowed; }
-.resultado-card { background:white; border-radius:24px; overflow:hidden; box-shadow:0 12px 40px rgba(107,58,31,.2); margin-bottom:16px; }
-.resultado-header { background:linear-gradient(135deg, var(--laranja), var(--laranja-escuro)); padding:24px 20px; text-align:center; }
-.resultado-emoji { font-size:3.5rem; display:block; margin-bottom:4px; animation:bounceIn .6s ease; }
+.wheel-center {
+  position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width: 58px; height: 58px;
+  background: var(--preto);
+  border-radius: 50%;
+  border: 4px solid var(--verde);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 0 0 3px var(--preto), 0 0 20px rgba(0,200,83,.6);
+  z-index: 5;
+}
+
+.btn-spin {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, var(--rosa), var(--rosa-esc));
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255,64,129,.5), 0 0 0 3px rgba(255,64,129,.2);
+  transition: all .2s;
+  margin-top: 16px;
+  letter-spacing: .5px;
+}
+.btn-spin:active { transform: scale(.97); }
+.btn-spin:disabled { background: #333; color: #666; box-shadow: none; cursor: not-allowed; }
+
+/* ── RESULTADO ── */
+.resultado-card {
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid rgba(0,200,83,.3);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  margin-bottom: 16px;
+}
+.resultado-header {
+  background: linear-gradient(135deg, var(--verde-esc), var(--verde));
+  padding: 28px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.resultado-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(255,255,255,.15), transparent 60%);
+}
+.resultado-emoji { font-size:3.5rem; display:block; margin-bottom:6px; animation:bounceIn .6s ease; }
 @keyframes bounceIn { 0%{transform:scale(0)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
-.resultado-titulo { font-family:'Fredoka One',cursive; font-size:1.2rem; color:white; opacity:.9; }
-.resultado-premio { font-family:'Fredoka One',cursive; font-size:1.9rem; color:white; line-height:1.1; margin-top:4px; }
+.resultado-titulo { font-family:'Fredoka One',cursive; font-size:1.1rem; color:rgba(255,255,255,.85); }
+.resultado-premio { font-family:'Fredoka One',cursive; font-size:2rem; color:white; line-height:1.1; margin-top:4px; text-shadow:2px 2px 0 rgba(0,0,0,.3); }
+
 .resultado-body { padding:20px; }
-.info-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #F5EEE8; font-size:.9rem; }
-.info-row:last-child { border-bottom:none; }
-.info-label { color:#999; font-weight:700; text-transform:uppercase; font-size:.75rem; letter-spacing:.5px; }
-.info-value { font-weight:800; color:var(--marrom); text-align:right; max-width:65%; }
-.codigo-cupom { background:#FFF8EE; border:2px dashed var(--laranja); border-radius:12px; padding:14px; text-align:center; margin:16px 0; }
-.codigo-label { font-size:.75rem; font-weight:800; color:#999; text-transform:uppercase; letter-spacing:1px; }
-.codigo-valor { font-family:'Fredoka One',cursive; font-size:2rem; color:var(--laranja); letter-spacing:3px; }
-.loading { display:inline-block; width:18px; height:18px; border:3px solid rgba(255,255,255,.3); border-top-color:white; border-radius:50%; animation:spin .8s linear infinite; vertical-align:middle; margin-right:8px; }
-@keyframes spin { to{transform:rotate(360deg)} }
-.confetti-piece { position:fixed; top:-10px; border-radius:2px; animation:confettiFall linear forwards; pointer-events:none; z-index:999; }
-@keyframes confettiFall { 0%{transform:translateY(0) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+.info-row {
+  display: flex; justify-content:space-between; align-items:center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: .9rem;
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { color:rgba(255,255,255,.4); font-weight:800; text-transform:uppercase; font-size:.72rem; letter-spacing:.5px; }
+.info-value { font-weight:800; color:white; text-align:right; max-width:65%; }
+
+.codigo-cupom {
+  background: rgba(0,200,83,.08);
+  border: 2px dashed rgba(0,200,83,.5);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  margin: 16px 0 4px;
+}
+.codigo-label { font-size:.72rem; font-weight:900; color:rgba(0,200,83,.7); text-transform:uppercase; letter-spacing:1px; }
+.codigo-valor { font-family:'Fredoka One',cursive; font-size:2rem; color:var(--verde); letter-spacing:3px; text-shadow:0 0 20px rgba(0,200,83,.5); }
+
+/* ── UTILS ── */
+.loading {
+  display: inline-block; width:18px; height:18px;
+  border: 3px solid rgba(255,255,255,.3); border-top-color:white;
+  border-radius: 50%; animation: spin .8s linear infinite;
+  vertical-align: middle; margin-right:8px;
+}
+@keyframes spin { to{ transform:rotate(360deg) } }
+
+.confetti-piece {
+  position: fixed; top:-10px; border-radius: 2px;
+  animation: confettiFall linear forwards;
+  pointer-events: none; z-index:999;
+}
+@keyframes confettiFall {
+  0%{ transform:translateY(0) rotate(0deg); opacity:1 }
+  100%{ transform:translateY(100vh) rotate(720deg); opacity:0 }
+}
 </style>
 </head>
 <body>
 
-<div class="egg-deco">🌸</div>
-<div class="egg-deco">🌷</div>
-<div class="egg-deco">🍫</div>
-<div class="egg-deco">🌼</div>
-<div class="egg-deco">🌺</div>
-<div class="egg-deco">🍀</div>
+<!-- ESTRELAS DECORATIVAS -->
+<div class="star-deco">⚡</div>
+<div class="star-deco">✨</div>
+<div class="star-deco">💥</div>
+<div class="star-deco">⭐</div>
+<div class="star-deco">💫</div>
+<div class="star-deco">🌟</div>
 
 <div class="container">
+
+  <!-- HEADER -->
   <div class="header">
     <div class="logo-area">
-      <div class="logo-text">GRUPO</div>
-      <div class="logo-grupo">KUHN</div>
+      <div class="ppg-icon">👊</div>
+      <div class="logo-text-wrap">
+        <div class="logo-small">GRUPO</div>
+        <div class="logo-big">KUHN</div>
+      </div>
     </div>
-    <div class="title-pascoa">Roleta da <span>Páscoa</span></div>
-    <div class="subtitle">Gire e ganhe um prêmio especial!</div>
+    <div class="title-main">Roleta da <span>Sorte</span></div>
+    <div class="subtitle">⚡ Gire e descubra seu prêmio! ⚡</div>
   </div>
 
   <!-- TELA 1: LOGIN -->
   <div id="screen-login" class="screen active">
     <div class="card">
-      <div class="card-title">✨ Seu presente te espera</div>
-      <div class="card-sub">Preencha os dados para girar a roleta</div>
+      <div class="card-title">💚 Hora de girar!</div>
+      <div class="card-sub">Preencha seus dados para liberar a roleta</div>
       <div class="field-group">
         <label>👤 Seu nome</label>
         <input type="text" id="input-nome" placeholder="Como você se chama?" autocomplete="off">
@@ -122,7 +380,7 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
       </div>
       <div class="field-group">
         <label>🔑 Senha da campanha</label>
-        <input type="text" id="input-senha" placeholder="Ex: COELHO-847" autocomplete="off">
+        <input type="text" id="input-senha" placeholder="Ex: Lindinha-123" autocomplete="off">
       </div>
       <button class="btn-primary" id="btn-entrar" onclick="validarAcesso()">Confirmar</button>
       <div id="error-login" class="error-msg" style="display:none"></div>
@@ -136,16 +394,20 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
       <strong id="nome-display">—</strong>
     </div>
     <div class="wheel-container">
-      <svg class="wheel-arrow" width="40" height="50" viewBox="0 0 40 50">
-        <polygon points="20,0 38,38 20,28 2,38" fill="#F4721B" stroke="white" stroke-width="2"/>
-        <circle cx="20" cy="38" r="10" fill="#F4721B" stroke="white" stroke-width="2"/>
+      <!-- SETA ROSA -->
+      <svg class="wheel-arrow" width="44" height="54" viewBox="0 0 44 54">
+        <polygon points="22,0 42,42 22,30 2,42" fill="#FF4081" stroke="#1A1A2E" stroke-width="2.5"/>
+        <circle cx="22" cy="42" r="11" fill="#FF4081" stroke="#1A1A2E" stroke-width="2.5"/>
+        <circle cx="22" cy="42" r="5" fill="white" opacity=".6"/>
       </svg>
       <div class="wheel-wrapper">
         <canvas id="wheel-canvas" width="320" height="320"></canvas>
-        <div class="wheel-center">🌸</div>
+        <div class="wheel-center">💥</div>
       </div>
     </div>
-    <button class="btn-spin" id="btn-spin" onclick="girarRoleta()">GIRAR A ROLETA!</button>
+    <button class="btn-spin" id="btn-spin" onclick="girarRoleta()">
+      ⚡ GIRAR A ROLETA! ⚡
+    </button>
   </div>
 
   <!-- TELA 3: RESULTADO -->
@@ -168,6 +430,7 @@ input[type="text"]::placeholder { color:#CCC; font-weight:400; }
       </div>
     </div>
   </div>
+
 </div>
 
 <script>
@@ -188,7 +451,11 @@ let isSpinning  = false;
 let jaGirou     = false;
 let anguloAtual = 0;
 
-const CORES = ['#F4721B','#FFD700','#FF8C42','#4CAF50','#FF6B9D','#9C27B0','#2196F3','#FF5722','#8BC34A','#F06292'];
+// Cores PPG: verde, rosa, azul, preto, branco + variações
+const CORES = [
+  '#00C853','#FF4081','#40C4FF','#1A1A2E','#E040FB',
+  '#00BCD4','#FF6D00','#76FF03','#FF1744','#00E5FF'
+];
 
 function mostrarTela(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -303,24 +570,31 @@ function desenharRoleta(angulo) {
     const inicio = angulo + i * arcSize - Math.PI / 2;
     const fim    = inicio + arcSize;
 
+    // Fatia
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, raio, inicio, fim); ctx.closePath();
     ctx.fillStyle = CORES[i % CORES.length]; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 3; ctx.stroke();
 
+    // Borda interna branca fina
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = 1; ctx.stroke();
+
+    // Texto
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(inicio + arcSize / 2);
     const emoji = premios[i].emoji || '🎁';
     const label = (premios[i].nome || '').substring(0, 13) + ((premios[i].nome || '').length > 13 ? '…' : '');
     const tx    = raio - 12;
     ctx.textAlign = 'right'; ctx.fillStyle = 'white';
-    ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 3;
+    ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
     ctx.font = 'bold 13px Nunito, sans-serif'; ctx.fillText(label, tx, 5);
-    ctx.font = '16px serif'; ctx.shadowBlur = 2;
+    ctx.font = '16px serif'; ctx.shadowBlur = 3;
     ctx.fillText(emoji, tx - ctx.measureText(label).width - 4, 6);
     ctx.restore();
   }
 
-  ctx.beginPath(); ctx.arc(cx, cy, 28, 0, 2 * Math.PI);
-  ctx.fillStyle = 'white'; ctx.fill();
+  // Centro escuro
+  ctx.beginPath(); ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1A1A2E'; ctx.fill();
+  ctx.strokeStyle = '#00C853'; ctx.lineWidth = 3; ctx.stroke();
 }
 
 function girarRoleta() {
@@ -333,28 +607,22 @@ function girarRoleta() {
   const idx           = premios.findIndex(p => p.nome === premioCerto.nome);
   const arcSize       = (2 * Math.PI) / premios.length;
 
-  // Centro do segmento ganhador no referencial da roleta (sem rotação)
-  // O segmento i começa em: i * arcSize - PI/2
-  // Centro do segmento: i * arcSize + arcSize/2 - PI/2
-  // Para a seta (topo = 0) apontar para esse centro, precisamos girar a roleta
-  // de forma que esse ângulo fique em 0. Logo anguloDestino = -(centro do segmento)
   const centroSegmento = idx * arcSize + arcSize / 2 - Math.PI / 2;
   const anguloDestino  = -centroSegmento;
 
-  // Normaliza pro intervalo [0, 2PI] e adiciona voltas completas
-  const voltas       = 6 + Math.floor(Math.random() * 4);
-  const anguloFinal  = anguloAtual
+  const voltas      = 6 + Math.floor(Math.random() * 4);
+  const anguloFinal = anguloAtual
     + (((anguloDestino - anguloAtual) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI))
     + voltas * 2 * Math.PI;
 
-  const duracao  = 4500 + Math.random() * 1000;
-  const tInicio  = performance.now();
-  const aInicio  = anguloAtual;
+  const duracao = 4500 + Math.random() * 1000;
+  const tInicio = performance.now();
+  const aInicio = anguloAtual;
 
   function animar(agora) {
-    const t      = Math.min((agora - tInicio) / duracao, 1);
-    const ease   = 1 - Math.pow(1 - t, 4);
-    anguloAtual  = aInicio + (anguloFinal - aInicio) * ease;
+    const t     = Math.min((agora - tInicio) / duracao, 1);
+    const ease  = 1 - Math.pow(1 - t, 4);
+    anguloAtual = aInicio + (anguloFinal - aInicio) * ease;
     desenharRoleta(anguloAtual);
     if (t < 1) { requestAnimationFrame(animar); }
     else { isSpinning = false; setTimeout(() => mostrarResultado(premioCerto), 700); }
@@ -409,19 +677,19 @@ function gerarCodigo() {
 }
 
 function lancarConfetti() {
-  const cores = ['#F4721B','#FFD700','#FF6B9D','#4CAF50','#9C27B0','#2196F3'];
-  for (let i = 0; i < 60; i++) {
+  const cores = ['#00C853','#FF4081','#40C4FF','#E040FB','#76FF03','#FFD740'];
+  for (let i = 0; i < 70; i++) {
     setTimeout(() => {
       const el = document.createElement('div');
       el.className = 'confetti-piece';
       el.style.left              = Math.random() * 100 + 'vw';
       el.style.backgroundColor   = cores[Math.floor(Math.random() * cores.length)];
-      el.style.width             = (8 + Math.random() * 8) + 'px';
-      el.style.height            = (8 + Math.random() * 8) + 'px';
+      el.style.width             = (6 + Math.random() * 10) + 'px';
+      el.style.height            = (6 + Math.random() * 10) + 'px';
       el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 4000);
-    }, i * 35);
+    }, i * 30);
   }
 }
 </script>
